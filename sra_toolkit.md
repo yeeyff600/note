@@ -1,0 +1,22 @@
+# Brief
+When download the data from ncbi with the accession numbers, sratoolkit is necessary. There is a detailed guide for sratoolkit: 
+https://github.com/ncbi/sra-tools/wiki/01.-Downloading-SRA-Toolkit.
+Here are more specific guidelines to start.   
+
+First of all, make a list of SRR numbers like:   
+```
+SRR10932013
+SRR10932014
+...
+```
+# download data to HPC (recommended)
+1. make sure download data to the storage:cd /strorage/...
+2. the hpc have sratoolkit, but quick configuration is needed. run `vdb-config -i` and use `tab` to select and `enter` to choose. `Remote Access` should be enabled and you have to choose the ideal directory as your data `Cache`
+3. to ensure your downloads continue even after you disconnect your SSH session from the HPC, you need to run the process within a persistent session manager or submit it as a background job. `screen` is the effective way: `screen -S your_job_name`.
+4. module needed: `module load sratoolkit` & `module load parallel` and check the module availability: `module list`.
+5. to download 4 runs at the same time `parallel -j 4 prefetch ::: $(your_SRR_list)`, now you can safely leave the screen by entering `Ctrl + A + D`. `do not leave ternimal without leave screen!`. when you have done this, you will see three files for a run in your `Cache` :`.sra.lock`,`.sra.prf`,`.sra.tmp`. when data downloaded successfully, there will be only `.sra`
+6. to log back, enter `screen -ls` and `screen -r your_job_name`.
+# download data to PC  
+1. you have to download `sratoolkit`.
+2. mac maybe activate the software by `sudo spctl --master-disable` and `sudo spctl --master-enable` when finishing.
+3. `cd pathway_to_sratookit/bin` and `prefetch SRR10931995`. because local storage is limited, we will not download multiple data in parallel.
