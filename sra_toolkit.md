@@ -10,7 +10,7 @@ SRR10932014
 ```
 # download data to HPC (recommended)
 1. make sure download data to the storage:cd /strorage/...
-2. the hpc have sratoolkit, but quick configuration is needed. run `vdb-config -i` and use `tab` to select and `enter` to choose. `Remote Access` should be enabled and you have to choose the ideal directory as your data `Cache`
+2. the hpc have sratoolkit, but quick configuration is needed. run `vdb-config -i` and use `tab` to select and `enter` to choose. `Remote Access` should be enabled and you have to choose the ideal directory as your data `Cache`. all the files downloaded will be stored in your  `Cache`.
 3. to ensure your downloads continue even after you disconnect your SSH session from the HPC, you need to run the process within a persistent session manager or submit it as a background job. `screen` is the effective way:
    ```
    screen -S your_job_name
@@ -18,19 +18,18 @@ SRR10932014
 5. module needed: `module load sratoolkit` & `module load parallel` and check the module availability: `module list`.
 6. to download 4 runs at the same time:
    ```
-   parallel -j 4 prefetch ::: $(your_SRR_list)
+   parallel -j 4 prefetch ::: $(cat your_SRR_list) 
    ```
    or download all the runs you need in your list at the same time
    ```
-   parallel prefetch ::: $(your_SRR_list)
+   parallel prefetch ::: $(cat your_SRR_list)
    ```
    now you can safely leave the screen by entering `Ctrl + A + D`. do not leave ternimal without leave screen! if you get tired of parallel citation note, enter `parallel --citation`
 7. to check your downloading, enter:
    ```
    ps -ef | grep -E "fasterq-dump|prefetch" | grep -v grep
    ```
-8. after you have done this, you will see three files for a run in your `Cache` :`.sra.lock`,`.sra.prf`,`.sra.tmp`. when data downloaded successfully, there will be only `.sra`.
-9. to log back
+8. after you have done this, you will see three files for a run in your `Cache` :`.sra.lock`,`.sra.prf`,`.sra.tmp`. when data downloaded successfully, there will be only `.sra`. to log back:
     ```
    screen -ls
     ```
@@ -39,6 +38,11 @@ SRR10932014
    screen -r screen_session
    ```
    this enable you reattach to the specific screen session
+10. in most situation, your downloading process will not disrupt. but if you disrupt the downloading in screen with `Ctrl + C`, the `.sra.lock` file will not autodelete. relaunching the downloading will make error:
+    ```
+    warn: lock exists while copying file - Lock file ... exists: download canceled
+    ```
+    you have to delete all the `.sra.lock` files with `rm *.sra.lock`
 # download data to PC  
 1. you have to download and install `sratoolkit`.
 2. mac maybe activate the software by `sudo spctl --master-disable` and `sudo spctl --master-enable` when finishing.
