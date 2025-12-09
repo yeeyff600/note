@@ -29,8 +29,20 @@ SRR10932014
 8. after you have done this, you will see three files for a run in your `Cache` :`.sra.lock`,`.sra.prf`,`.sra.tmp`. when data downloaded successfully, there will be only `.sra`.
 9. to log back, enter `screen -ls` and `screen -r your_job_name`.
 # download data to PC  
-1. you have to download `sratoolkit`.
+1. you have to download and install `sratoolkit`.
 2. mac maybe activate the software by `sudo spctl --master-disable` and `sudo spctl --master-enable` when finishing.
 3. `cd pathway_to_sratookit/bin` and `prefetch SRR10931995`. because local storage is limited, we will not download multiple data in parallel.
-
-   
+# fasterq-dump  
+`fasterq-dump` is one tool of sratoolkit package. we use it to transform `.sra` to `.fastq`.  
+1. log back or create a new `screen`. make sure `sratoolkit` is available.
+2. navigate to the directory where `.sra` files are stored
+3. enter the command below:
+   ```
+   find . -maxdepth 1 -name "*.sra" | parallel fasterq-dump --split-files --outdir path_to_fastq {}
+   ```
+   `find . -maxdepth 1 -name "*.sra"` will find all the `.sra` files and pipe them to parallel. `--split-files` means the data will be processed as pair-end.
+4. when all the `.sra` files are processed, you can cancel the `screen` by
+   ```
+   exit
+   exit
+   ```
