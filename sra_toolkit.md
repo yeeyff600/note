@@ -11,9 +11,12 @@ SRR10932014
 # download data to HPC (recommended)
 1. make sure download data to the storage:cd /strorage/...
 2. the hpc have sratoolkit, but quick configuration is needed. run `vdb-config -i` and use `tab` to select and `enter` to choose. `Remote Access` should be enabled and you have to choose the ideal directory as your data `Cache`
-3. to ensure your downloads continue even after you disconnect your SSH session from the HPC, you need to run the process within a persistent session manager or submit it as a background job. `screen` is the effective way: `screen -S your_job_name`.
-4. module needed: `module load sratoolkit` & `module load parallel` and check the module availability: `module list`.
-5. to download 4 runs at the same time:
+3. to ensure your downloads continue even after you disconnect your SSH session from the HPC, you need to run the process within a persistent session manager or submit it as a background job. `screen` is the effective way:
+   ```
+   screen -S your_job_name
+   ```
+5. module needed: `module load sratoolkit` & `module load parallel` and check the module availability: `module list`.
+6. to download 4 runs at the same time:
    ```
    parallel -j 4 prefetch ::: $(your_SRR_list)
    ```
@@ -21,18 +24,26 @@ SRR10932014
    ```
    parallel prefetch ::: $(your_SRR_list)
    ```
-   now you can safely leave the screen by entering `Ctrl + A + D`. do not leave ternimal without leave screen!
+   now you can safely leave the screen by entering `Ctrl + A + D`. do not leave ternimal without leave screen! if you get tired of parallel citation note, enter `parallel --citation`
 7. to check your downloading, enter:
    ```
    ps -ef | grep -E "fasterq-dump|prefetch" | grep -v grep
    ```
 8. after you have done this, you will see three files for a run in your `Cache` :`.sra.lock`,`.sra.prf`,`.sra.tmp`. when data downloaded successfully, there will be only `.sra`.
-9. to log back, enter `screen -ls` and `screen -r your_job_name`.
+9. to log back
+    ```
+   screen -ls
+    ```
+    this shows all your screen sessions
+   ```
+   screen -r screen_session
+   ```
+   this enable you reattach to the specific screen session
 # download data to PC  
 1. you have to download and install `sratoolkit`.
 2. mac maybe activate the software by `sudo spctl --master-disable` and `sudo spctl --master-enable` when finishing.
 3. `cd pathway_to_sratookit/bin` and `prefetch SRR10931995`. because local storage is limited, we will not download multiple data in parallel.
-# fasterq-dump  
+# format transformation  
 `fasterq-dump` is one tool of sratoolkit package. we use it to transform `.sra` to `.fastq`.  
 1. log back or create a new `screen`. make sure `sratoolkit` is available.
 2. navigate to the directory where `.sra` files are stored
@@ -43,6 +54,5 @@ SRR10932014
    `find . -maxdepth 1 -name "*.sra"` will find all the `.sra` files and pipe them to parallel. `--split-files` means the data will be processed as pair-end.
 4. when all the `.sra` files are processed, you can cancel the `screen` by
    ```
-   exit
    exit
    ```
