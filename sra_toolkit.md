@@ -47,7 +47,7 @@ SRR10932014
 1. you have to download and install `sratoolkit`.
 2. mac maybe activate the software by `sudo spctl --master-disable` and `sudo spctl --master-enable` when finishing.
 3. `cd pathway_to_sratookit/bin` and `prefetch SRR10931995`. because local storage is limited, we will not download multiple data in parallel.
-# format transformation  
+# format transformation (optional)
 `fasterq-dump` is one tool of sratoolkit package. we use it to transform `.sra` to `.fastq`.  
 1. log back or create a new `screen`. make sure `sratoolkit` is available.
 2. navigate to the directory where `.sra` files are stored
