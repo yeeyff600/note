@@ -60,6 +60,16 @@ SRR10932014
    ```
    exit
    ```
+- to check the size of your downloaded data:
+  ```
+  du -sh /storage/..
+  ```
+  this shows how much you use under specific dir
+- or maybe you want to check all of your quota, especially when you have a large size of data
+  ```
+  lfs quota -uh $USER /storage/
+  ```
+  this command show all of your data in the HPC
 # conclusion
 the logic is download sra file through prefetch, while using parallel to download multiple sra at the same time. transform sra (which can be deleted after) file to fastq file using fasterq-dump.  
 - the ultimate command can be:  
