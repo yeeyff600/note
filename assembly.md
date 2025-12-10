@@ -1,6 +1,5 @@
 # assembly
-after downloading the `.sra` file, next step is to transform `.sra` to `.fastq` which can be processed by most of software. however, `SPAdes genome assembler v4.2.0` can be configured to read NCBI SRA files directly. see the full guideline as below.   
-(https://ablab.github.io/spades/installation.html)
+
 ## install
 1. install SPAdes under your `home` directory
    ```
