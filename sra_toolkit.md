@@ -60,3 +60,9 @@ SRR10932014
    ```
    exit
    ```
+# conclusion
+the logic is download sra file through prefetch, while using parallel to download multiple sra at the same time. transform sra (which can be deleted after) file to fastq file using fasterq-dump.  
+- the ultimate command can be:  
+```
+parallel 'prefetch {} && fasterq-dump {} --gzip --split-files -O ./fastq_out && rm -f "path_to_Cache/{}.sra"' ::: $(cat path_to_SRR_list)
+```
