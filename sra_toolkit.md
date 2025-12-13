@@ -53,7 +53,7 @@ SRR10932014
 2. navigate to the directory where `.sra` files are stored
 3. enter the command below:
    ```
-   find . -maxdepth 1 -name "*.sra" | parallel fasterq-dump --split-files --outdir path_to_fastq {}
+   find . -maxdepth 1 -name "*.sra" | parallel fasterq-dump --split-files --outdir path_to_fastq --threads 4 {}
    ```
    `find . -maxdepth 1 -name "*.sra"` will find all the `.sra` files and pipe them to parallel. `--split-files` means the data will be processed as pair-end.
 4. when all the `.sra` files are processed, you can cancel the `screen` by
